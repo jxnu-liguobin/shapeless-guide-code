@@ -31,6 +31,12 @@ lazy val representations =
     .dependsOn(common)
     .settings(commonSettings)
 
+lazy val literaltypes =
+  project
+    .in(file("literaltypes"))
+    .dependsOn(common)
+    .settings(commonSettings)
+
 lazy val csv =
   project
     .in(file("csv"))
@@ -77,6 +83,7 @@ lazy val root = project
     numfields,
     random,
     migrations,
+    literaltypes,
     mapping
   )
   .settings(commonSettings)
