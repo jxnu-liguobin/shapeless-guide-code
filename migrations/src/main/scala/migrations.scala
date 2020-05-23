@@ -1,28 +1,23 @@
-import cats.Monoid
-import cats.instances.all._
-import shapeless._
-import shapeless.labelled.{ field, FieldType }
-import shapeless.ops.hlist
-import shapeless.ops.coproduct
 
 trait Migration[A, B] {
   def apply(original: A): B
 }
 
 object Migration {
-  def pure[A, B](func: A => B): Migration[A, B] =
-    new Migration[A, B] {
-      def apply(original: A): B =
-        func(original)
-    }
-
+  def pure[A, B](func: A => B): Migration[A, B] = (original: A) => func(original)
 }
 
 case class SameA(a: String, b: Int, c: Boolean)
 case class SameB(a: String, b: Int, c: Boolean)
+object SameB {
+  implicit val p = Migration.pure[SameA, SameB](a => SameB(a.a, a.b, a.c))
+}
 
 case class DropFieldA(a: String, b: Int, c: Boolean)
 case class DropFieldB(a: String, c: Boolean)
+object DropFieldA {
+  implicit val p = Migration.pure[DropFieldA, DropFieldB](a => DropFieldB(a.a, a.c))
+}
 
 case class AddFieldA(a: String)
 case class AddFieldB(a: String, z: Int)
@@ -41,7 +36,8 @@ object Main extends Demo {
 
   print(SameA("abc", 123, true).migrateTo[SameB])
   print(DropFieldA("abc", 123, true).migrateTo[DropFieldB])
-  print(AddFieldA("abc").migrateTo[AddFieldB])
-  print(ReorderA("abc", 123).migrateTo[ReorderB])
-  print(KitchenSinkA("abc", 123, true).migrateTo[KitchenSinkB])
+  //  need implicit migration like SameB DropFieldB
+  //  print(AddFieldA("abc").migrateTo[AddFieldB])
+  //  print(ReorderA("abc", 123).migrateTo[ReorderB])
+  //  print(KitchenSinkA("abc", 123, true).migrateTo[KitchenSinkB])
 }

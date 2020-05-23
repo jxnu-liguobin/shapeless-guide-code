@@ -37,12 +37,6 @@ lazy val csv =
     .dependsOn(common)
     .settings(commonSettings)
 
-lazy val literaltypes =
-  project
-    .in(file("literaltypes"))
-    .dependsOn(common)
-    .settings(commonSettings)
-
 lazy val json =
   project
     .in(file("json"))
@@ -79,7 +73,6 @@ lazy val root = project
     helloworld,
     representations,
     csv,
-    literaltypes,
     json,
     numfields,
     random,
