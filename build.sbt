@@ -1,4 +1,4 @@
-scalaVersion in ThisBuild := "2.13.1"
+scalaVersion in ThisBuild := "2.12.11"
 
 libraryDependencies in Global ++= Seq(
   "com.chuusai"   %% "shapeless"     % "2.3.3",
